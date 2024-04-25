@@ -25,10 +25,10 @@ pipeline {
             script{
                def props = readJSON file: configFile
                if(stage.equals("preprod")){
+                  def tags = props.get("tags")
                   tags.remove("nextStage")
                   def list = new ArrayList()
                   list.add("prod")
-                  def tags = props.get("tags")
                   tags.accumulate("nextStage", list)
                   writeJSON file: configFile, json: props
                }
