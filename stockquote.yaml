@@ -1,0 +1,75 @@
+asyncapi: 3.0.0
+info:
+  title: Stock Quote Notification
+  version: 1.0.0
+  description: |
+    Sends notifications when a maintenance or outage of the electricity 
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+servers:
+  design:
+    host: '{dataplane}'
+    protocol: https
+    title: SSE
+    description: SSE - Server Sent Events
+    variables:
+      dataplane:
+        enum:
+          - 'https://api-server.ampint-dev01-dd02.dxchange.cloud:443/asyncapi/sse'
+          - 'https://ampint-qa01-dd02.dxchange.cloud:4443/asyncapi/sse'
+          - 'https://api-server.ampint-prf01-dd01.dxchange.cloud:443/asyncapi/sse'
+          - 'https://prf01.ampint.axway.com:4443/asyncapi/sse'
+channels:
+  stock/notification:
+    address: v1/stock
+    messages:
+      onStockNotification.message:
+        $ref: '#/components/messages/StockNotification'
+operations:
+  onOutageNotification:
+    action: receive
+    channel:
+      $ref: '#/channels/stock~1notification'
+    messages:
+      - $ref: '#/channels/stock~1notification/messages/onStockNotification.message'
+components:
+  messages:
+    StockNotification:
+      name: Notification Of the stock
+      title: Stcok  Notification Events
+      summary: Inform about a event of notification of an latest stock quote
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/stock'
+      headers:
+        applicationId:
+          type: string
+        lastReadIndex:
+          type: number
+  schemas:
+    stock:
+      type: array
+      properties:
+        notification:
+          type: string
+        symbol:
+          type: string
+        lastPrice:
+          type: number
+        change:
+          type: number
+        errorObject:
+          type: object
+          properties:
+            errorMessage:
+              type: string
+            errorDetails:
+              type: string
+            errors:
+              type: array
+              items:
+                properties:
+                  message:
+                    type: string
+      $schema: 'http://json-schema.org/draft-04/schema#'
