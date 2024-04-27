@@ -64,6 +64,19 @@
 	],
 	"clientOrganizations": [
 	  "ALL"
-	]
+	],
+      "systemQuota":{
+      "restrictions":[
+         {
+            "method":"*",
+            "type":"throttle",
+            "config":{
+               "period":"minute",
+               "messages":1000,
+               "per":5
+            }
+         }
+      ]
+   }
   }
   
