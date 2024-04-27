@@ -1,6 +1,6 @@
 {
-	"name": "Stock Watch List API v1",
-	"path": "/api/v1",
+	"name": "Stock Watch List API v2",
+	"path": "/api/v2",
 	"state": "published",
 	"version": "1.0.0",
 	"organization": "API Development",
@@ -72,7 +72,7 @@
             "type":"throttle",
             "config":{
                "period":"minute",
-               "messages":1000,
+               "messages":2000,
                "per":5
             }
          }
